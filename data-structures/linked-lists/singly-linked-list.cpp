@@ -228,7 +228,7 @@ int main(void)
 
     // some random test cases
     list.addToHead(node1); // insert a node at head
-    list.addToHead(nullptr); // insert a node at head
+    list.addToHead(nullptr); // insert a nullptr at head
     list.addToTail(node2); // insert node at tail
     list.addAfterNode(node3, node2); // insert node3 after node2
     list.deleteFromList(list.findNode(3)); // delete node3 from list after finding it

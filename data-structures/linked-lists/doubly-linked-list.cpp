@@ -288,7 +288,7 @@ int main(void)
     list.addToHead(nullptr); // insert a node at head
     list.addToTail(node2); // insert node at tail
     list.addAfterNode(node3, node2); // insert node3 after node2
-    list.addBeforeNode(node4, node5); // insert node3 after node2
+    list.addBeforeNode(node4, node5); // insert node4 before node5
     list.deleteFromList(list.findNode(3)); // delete node3 from list after finding it
     list.deleteFromList(list.findNode(4)); // attempt to delete a node with 4, but it's not in the list yet
     list.addToTail(node5); // add node4 to the list

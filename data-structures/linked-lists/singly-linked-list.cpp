@@ -132,6 +132,7 @@ class SinglyLinkedList {
         // through the whole list of length n in order to find the tail. 
         // Note: this could be optimizied to O(1) if you kept a tail pointer for
         // the linked list
+        
         void addToTail(Node *node) {
             // the strategy is to iterate through the list until we find the tail,
             // and make the tail point to this node

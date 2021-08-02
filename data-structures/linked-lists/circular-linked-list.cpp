@@ -54,7 +54,7 @@ class CircularLinkedList {
             // if not, we can just store it as the head and make it point to
             // itself
 
-            if (!this->tail->next) { // if the head doesn't exist (empty)
+            if (!this->tail) { // if the tail doesn't exist (empty)
                 this->tail = node;     // make the tail this node
 
                 // make the head this node, making it point to itself
@@ -114,7 +114,7 @@ class CircularLinkedList {
             }
 
         }
-        
+
         // this function will add the given node after another node in the
         // list, given a pointer to the node after which it must be inserted.
         // The time complexity of this function is O(1) because it does a constant
@@ -125,7 +125,7 @@ class CircularLinkedList {
             // the new node. No special checking is needed for the circular list
             // because if something is added after the tail, it automatically
             // becomes the new head
-            
+
             // check if the node we are trying to add actually exists
             // if not, return
             if (!node)
@@ -142,9 +142,38 @@ class CircularLinkedList {
             placeAfter->next = node; 
         }
 
-        // there is no ADD TO TAIL function as it's just going to end up
-        // with the same result as the ADD TO HEAD function 
         
+        // this function will add the node to the tail of the list.
+        // unlike the regular singly linked list, this only has a time
+        // complexity of O(1) because we keep a pointer to the tail
+        void addToTail(Node *node) {
+            // the strategy is to make the tail point to the new node,
+            // the new node point to the old tail's next. We also have
+            // to make this node the new tail
+
+            // check if the node we are trying to add actually exists
+            // if not, return
+            if (!node)
+                return;
+
+            // if the tail does not exist yet (list empty)
+            if (!this->tail) {
+                this->tail = node;     // make the tail this node
+
+                // make the head this node, making it point to itself
+                this->tail->next = node;
+            } else {
+                // make this node point to the next of the old tail
+                node->next = this->tail->next; 
+
+                // make the old tail point to this node
+                this->tail->next = node;
+
+                // make the new node the tail of this list
+                this->tail = node;
+            }
+
+        }
 
         // this function will delete a node from the linked list, given a pointer
         // to the node that needs to be deleted. The time complexity of this function
@@ -196,7 +225,7 @@ class CircularLinkedList {
                     if (temp->next == this->tail) { 
                         temp->next = this->tail->next; // regular unlinking
                         this->tail = temp; // set a new tail
- 
+
                         delete node; // freeing space
                     } else { // if the temp's next pointer is not the tail 
                         temp->next = node->next; // unlinking the node from the list
@@ -206,4 +235,89 @@ class CircularLinkedList {
 
             }
         }
+
+        // this function will go through the list and find the node with 
+        // the data specified. When it is found, it will return a pointer to
+        // the node that contains that data. The time complexity of this is
+        // O(n), since it may have to iterate through the whole list to find
+        // the right node. If not found, it will return a nullptr
+        Node* findNode(int data) {
+            // the srategy is to iterate through the list, and return the pointer
+            // of the node when the data of the current node matches the data
+            // requested
+
+            // set a temp pointer, init to the head, where we'll start
+            Node* temp = this->tail->next;
+
+            // we have to check if the head has the data, in which we case 
+            // we return automatically
+            if (temp->data == data) {
+                return temp;
+            } else {
+                // while temp is still a valid pointer, the current node does not
+                // contain the correct data, and temp does not point to the 
+                // head of the list, iterate through the list
+                while (temp && temp->data != data && temp->next != this->tail->next){
+                    temp = temp->next; // set the temp to the next node
+                }
+            }
+
+            // if the temp variable is the head (which we've already dealt with),
+            // it means the node was not found, so return nullptr. Else, return
+            // temp, which is the node we want
+            return temp == this->tail->next ? nullptr : temp;
+        }
+
+        // this function is pretty self explanatory. It will simply go through
+        // the list and print each value. This function has an O(n) time
+        // complexity because it has to go through the list to print out the values
+        void printList() { 
+            // the strategy is to go through the list one by one and print out
+            // each value. We need to deal with the head specially to get a
+            // valid terminating condition for our loop
+
+            Node* temp = this->tail->next; // start at the head
+
+            if (!temp) { // if temp is a nullptr
+                std::cout << "No items in list" << std::endl;
+                return;
+            }
+
+            // print out the head
+            std::cout << temp->data << std::endl; 
+            temp = temp->next; // move on to the next node
+
+            // while temp actually exists and it's not the head
+            while (temp && temp != this->tail->next) {
+                std::cout << temp->data << std::endl; // print out the point
+                temp = temp->next; // move on to the next node
+            }
+        }
 };
+
+int main(void)
+{
+    // make 4 sample nodes to test out the linked list with
+    Node* node1 = new Node(1);
+    Node* node2 = new Node(2);
+    Node* node3 = new Node(3);
+    Node* node4 = new Node(4);
+    Node* node5 = new Node(5);
+
+    // creating a singly linked list object
+    CircularLinkedList list;
+
+    // some random test cases
+    list.addToHead(node1); // insert a node at head
+    list.addToHead(nullptr); // insert a nullptr at head
+    list.addToTail(node2); // insert node at tail
+    list.addAfterNode(node3, node2); // insert node3 after node2
+    list.addBeforeNode(node4, node3); // insert node3 after node2
+    list.deleteFromList(list.findNode(3)); // delete node3 from list after finding it
+    list.deleteFromList(list.findNode(4)); // attempt to delete a node with 4, but it's not in the list yet
+    list.addToTail(node5); // add node4 to the list
+
+    list.printList(); // print out the final list
+
+    return 0;
+}

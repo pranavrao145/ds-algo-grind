@@ -25,74 +25,44 @@
 // the height of the tree (with the same number of elements) would be log(n)
 // rather than the n we had before
 
+#include <iostream> // basic input and output
+
 class BST {
-public:
   int data;
-  BST *left, *right;
+  BST *left = nullptr, *right = nullptr;
 
-  // constructor with no predefined left and right
-  BST(int data) {
-    this->data = data;
-    this->left = nullptr;
-    this->right = nullptr;
+  BST(int data) { this->data = data; }
+
+  // function to traverse the tree in order. This will be covered in another
+  // file later on (in the algorithms section).
+  void inOrderTraveral(BST *root) {
+    if (root) {
+      inOrderTraveral(root->left);
+      std::cout << root->data << " ";
+      inOrderTraveral(root->right);
+    }
   }
 
-  // constructor with a predefined left and right
-  BST(int data, BST *left, BST *right) {
-    this->data = data;
-    this->left = left;
-    this->right = right;
-  }
+  // this function will take a root node and value, and insert a new node
+  // with that value into the tree where it's supposed to be
+  BST *insert(BST *node, int key) {
+    // the strategy is: if the node (which will initially be the root node)
+    // is not null, the recurse down the tree to figure out where the node
+    // should be. If the given key is greater than the current node's key,
+    // then call the insert function on the left subtree, else the right
+    // subtree. If the node is null, then simply return the node itself
 
-  // this function will take a root node and a desired key, and search the tree
-  // recursively for a node with that key. If such a node exists, it will
-  // return this node. Else, it will return a nullptr
-  BST *searchTree(BST *root, int data) {
-    // this is the strategy: if the current node is null, the node is
-    // not found, so return null. If the node's key is the one we're looking
-    // for, we return the node. If the current node's key is greater than the
-    // desired key, we rerun this function on the right subtree, else on the
-    // left subtree.
+    // if the current node is null
+    if (!node)
+      return new BST(key);
 
-    // check for nullptr
-    if (!root)
-      return nullptr;
+    // otherwise, recurse down the tree
+    if (key < node->data)
+      node->left = insert(node->left, key);
+    else if (key > node->data)
+      node->right = insert(node->right, key);
 
-    if (root->data == data)
-      return root;
-
-    if (root->data > data)
-      return searchTree(root->right, data);
-
-    return searchTree(root->left, data);
-  }
-
-  // this function will take a root node and a desired key, and insert a node
-  // with this key into the the tree in the right place. This function will
-  // return a pointer to the newly formed binary search tree.
-  BST *insert(BST *root, int key) {
-    // the node will always be a leaf, so the strategy is to check until the
-    // point where there's no child node, at which point we can insert the new
-    // node
-
-    // if the root doesn't exists (i.e. the tree doesn't exist or the previous
-    // node had no child), we can insert here because the new node must be a
-    // leaf
-    if (!root) {
-      BST *node = new BST(key); // make a new node
-    }
-    // if the given key is greater than the node's key, go to the right
-    // subtree
-    else if (root->data < key) {
-      root->right = insert(root->right, key);
-    }
-    // if the given key is less than the node's key, go to the left
-    // subtree
-    else if (root->data > key) {
-      root->left = insert(root->left, key);
-    }
-
-    return root;
+    // return the unchanged node pointer
+    return node;
   }
 };
-

@@ -54,4 +54,33 @@ class BST {
     // if the key is less than the root's key, recurse left
     return search(root->left, key);
   }
+
+  // this function will take a root node and a key. It will insert a node
+  // with the given key into the tree and return a pointer to the root of the
+  // new tree
+  BST *insert(BST *root, int key) {
+    // the strategy is to first check if the root (current node) exists or not
+    // if not, then we can insert the node at this point. So we just make a new
+    // BST and return a pointer to it. However, if it does exist, we have to
+    // traverse further. So we will first check if the value we want to insert
+    // is greater than the one of the current node. If so, we recurse right
+    // and repeat the process there until we encounter null (handled by base
+    // case). Else we recurse left. After everything is done, we should return
+    // the root node, which will be the root of the new tree (and also the old
+    // tree).
+
+    // base case: root is null, so we make a new BST (node)
+    if (!root)
+      return new BST(key);
+
+    // if the key is greater than the current node's data, recurse right
+    if (key > root->data)
+      root->right = insert(root->right, key);
+    // else recurse left
+    else
+      root->left = insert(root->left, key);
+
+    // once everything is done, return the root node
+    return root;
+  }
 };

@@ -83,4 +83,37 @@ class BST {
     // once everything is done, return the root node
     return root;
   }
+
+  // this function will take a root node and a key. It will delete the first
+  // occurence of a node in the tree and return the root of the new tree.
+  BST *deleteNode(BST *root, int key) {
+      // the strategy is to first check if the root (current node) is null. 
+      // If that's the case, there's nothing to, so we can just return the root.
+      // If it is not null, we have to continue our search or operate on this 
+      // node, depending on the situation. If this node is not the node we need
+      // to delete, we will continue to search. We will check if the key is 
+      // less than the data in the root. If so, we will recurse left, else right. 
+      // If this is the node we need to delete (i.e. the value of the key and the
+      // data inside the node are the same), then we proceed to delete it.   
+
+      // There are three possibilities for delete:
+      //    1. The node to be deleted is a leaf, in which case we just remove it
+      //    from the tree
+      //    2. The node to be deleted has only one child, in which case we will
+      //    copy the child to the node and delete the child
+      //    3. Node to be deleted has two children. In this case, we need to
+      //    find the current node's indorder successor. Refer to this link for
+      //    information on inorder successors:
+      //        https://www.geeksforgeeks.org/inorder-successor-in-binary-search-tree/
+      //    We will use the inorderSucessor function from there to find the inorder
+      //    successor. Refer to function definition for a more detailed explanation
+      //    on the algorithm. Once we find the inorder sucessor, we simply copy
+      //    the contents of the inorder sucessor to the current node and then
+      //    delete the inorder successor. Note: you actually only need to use 
+      //    the inorder successor when the right child is not empty.
+
+      // TODO: Figure out why the that's the case^
+
+      }
+
 };

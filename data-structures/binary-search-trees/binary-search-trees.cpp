@@ -25,12 +25,28 @@
 
 #include <iostream> // basic input and output
 
+class BST;
+
+BST *minValueNode(BST *node);
+
 class BST {
+public:
   int data;
   BST *left, *right;
 
   // constructor for easy creation of a BST (or a BST node)
   BST(int data) { this->data = data; }
+
+  // function to conduct an inorder traversal and print out the tree. For
+  // more detail on inorder traversals, see the algorithms section of this
+  // repo where this will be covered
+  void inOrderTraversal(BST *root) {
+    if (root) {
+      inOrderTraversal(root->left);
+      std::cout << root->data << std::endl;
+      inOrderTraversal(root->right);
+    }
+  }
 
   // this function will take a root node and a key. It will search the tree
   // for the first occurence of a node with a given key, and return that node
@@ -96,23 +112,29 @@ class BST {
     // If this is the node we need to delete (i.e. the value of the key and the
     // data inside the node are the same), then we proceed to delete it.
 
+    // Note: this function uses the delete operator and assumes any objects
+    // were allocated memory with the new operator.
+
     // There are three possibilities for delete:
     //    1. The node to be deleted is a leaf, in which case we just remove it
     //    from the tree
     //    2. The node to be deleted has only one child, in which case we will
     //    copy the child to the node and delete the child
-    //    3. Node to be deleted has two children. In this case, we need to
-    //    find the current node's indorder successor. Refer to this link for
-    //    information on inorder successors:
-    //        https://www.geeksforgeeks.org/inorder-successor-in-binary-search-tree/
-    //    We will use the inorderSucessor function from there to find the
-    //    inorder successor. Refer to function definition for a more detailed
-    //    explanation on the algorithm. Once we find the inorder sucessor, we
-    //    simply copy the contents of the inorder sucessor to the current node
-    //    and then delete the inorder successor. Note: you actually only need to
-    //    use the inorder successor when the right child is not empty.
+    //    3. In the case Node to be deleted has two children. Just like the
+    //    second subcase, we don't actually delete the actual node here, but
+    //    rather, we copy the appropriate successor's value into this node and
+    //    delete the successors instead. However, since this node has 2
+    //    children, we don't just copy the child into the parent and delete the
+    //    child. Instead, we find something called the inorder successor, which
+    //    is basically the next node from the current one in an inorder
+    //    traversal.
 
-    // TODO: Figure out why the that's the case^
+    //    Refer to this link for information on inorder successors in a BST:
+    //      https://www.geeksforgeeks.org/inorder-successor-in-binary-search-tree/
+
+    //    Refer to this link (under the "A good way to delete a key section")
+    //    for an example case of how the third option works:
+    //      https://inst.eecs.berkeley.edu/~cs61bl/r//cur/binary-search-trees/deletion-bst.html?topic=lab17.topic&step=1&course=
 
     // base case: root is null (just return the root)
     if (!root) {
@@ -123,13 +145,92 @@ class BST {
     // the data in the root is greater than the key, recurse left, else recurse
     // right
     if (root->data > key) {
-        root->left = deleteNode(root->left, key);
-        return root;
+      root->left = deleteNode(root->left, key);
+      return root;
+    } else if (root->data < key) {
+      root->right = deleteNode(root->right, key);
+      return root;
+    } else {
+      // if this node has the same data as the given key, this is what we have
+      // to delete (i.e. check the three scenarios)
+
+      // if the node has no child
+      if (!root->left && !root->right)
+        return nullptr;
+      // if the node only has one child (right or left is null)
+      else if (!root->left) {
+        BST *temp =
+            root->right; // store a temp node as the current root's right child
+        delete root;     // delete the root
+        return temp;     // return the temp node as the root of the new tree
+      } else if (!root->right) {
+        BST *temp =
+            root->left; // store a temp node as the current root's left child
+        delete root;    // delete the root
+        return temp;    // return the temp node as the root of the new tree
+      }
+
+      // finally, if both child nodes exist. find the inorder sucessor (smallest
+      // in the right subtree), copy it's data to the root, and delete the
+      // inorder successor
+
+      // find the inorder successor (smallest child in right subtree)
+      BST *temp = minValueNode(root->right);
+
+      // copy the inorder successor's content to this node
+      root->data = temp->data;
+
+      // delete the inorder successor
+      root->right = deleteNode(root->right, temp->data);
     }
-    else if (root->data < key) {
-        root->right = deleteNode(root->right, key);
-        return root;
-    }
- 
+
+    // return the root of the new tree
+    return root;
   }
 };
+
+// this is a utility function that will take a non-empty binary search tree
+// and return the smallest key value found in that tree. This assumes the right
+// subtree in the BST is not null, and therefore does not search the whole
+// binary search tree. (See link above on inorder successors in BSTs)
+BST *minValueNode(BST *node) {
+  BST *current = node; // store the current node
+
+  // loop throught to find the leftmost leaf of the tree
+  while (current && current->left)
+    current = current->left;
+
+  // return the leftmost leaf of the tree
+  return current;
+}
+
+int main(int argc, char *argv[]) {
+  BST *tree = new BST(20); // create a new tree with an initial value of 20
+
+  // insert some nodes
+  tree = tree->insert(tree, 30);
+  tree = tree->insert(tree, 20);
+  tree = tree->insert(tree, 40);
+  tree = tree->insert(tree, 70);
+  tree = tree->insert(tree, 60);
+  tree = tree->insert(tree, 80);
+
+  // initial traversal of the tree
+  std::cout << "Inorder traversal of tree:" << std::endl;
+  tree->inOrderTraversal(tree);
+
+  // traversal and printing of the tree after a few deletions
+  tree = tree->deleteNode(tree, 20);
+  std::cout << "After deleting 20:" << std::endl;
+  tree->inOrderTraversal(tree);
+
+  tree = tree->deleteNode(tree, 30);
+  std::cout << "After deleting 30:" << std::endl;
+  tree->inOrderTraversal(tree);
+
+  tree = tree->deleteNode(tree, 50);
+  std::cout << "After deleting 50:" << std::endl;
+  tree->inOrderTraversal(tree);
+
+  return 0;
+} 

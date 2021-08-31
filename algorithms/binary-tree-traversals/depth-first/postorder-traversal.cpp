@@ -4,10 +4,7 @@
 // Definition of an postorder traversal: an postorder traversal algorithm is a
 // tree traversal algorithm used on a binary tree.
 
-// a postorder traversal is normally used to delete the tree. It can also be
-// useful to get the postfix expression of an expression tree. See
-// http://en.wikipedia.org/wiki/Reverse_Polish_notation for info on postfix
-// expressions.
+// a postorder traversal is normally used to delete the tree.
 
 // the postorder traversal algorithm processes a binary tree by first
 // recursively traversing the left subtree, then recursively traversing the

@@ -4,11 +4,7 @@
 // Definition of an preorder traversal: an preorder traversal algorithm is a
 // tree traversal algorithm used on a binary tree.
 
-// A preorder traversal is normally used to create a copy of the tree. It's
-// also used to get prefix expressions of an expression tree (see
-// https://www.geeksforgeeks.org/expression-tree/). See
-// http://en.wikipedia.org/wiki/Polish_notation to understand why prefix
-// expressions are useful.
+// A preorder traversal is normally used to create a copy of the tree. 
 
 // the preorder traversal algorithm processes a binary tree by first visiting the 
 // root, recursively traversing the left subtree, and then finally recursively traversing

@@ -38,7 +38,7 @@ BST *minValueNode(BST *node) {
 
 void preOrderTraversal(BST *root) {
   // the strategy is to start at the root of the tree. If the root is null,
-  // we reutrn. If not, we print out the value of the current node. Then we recur
+  // we return. If not, we print out the value of the current node. Then we recur
   // on the left subtree, and then on the right subtree
   
   // if the root is null, return

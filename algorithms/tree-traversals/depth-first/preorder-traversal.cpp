@@ -1,25 +1,26 @@
-// This document contains an implementation of the inorder traversal algorithm
+// This document contains an implementation of the preorder traversal algorithm
 // for a binary tree.
 
-// Definition of an inorder traversal: an inorder traversal algorithm, sometimes
-// known as a symmetric traversal, is a tree traversal algorithm used on a
-// binary tree.
+// Definition of an preorder traversal: an preorder traversal algorithm is a
+// tree traversal algorithm used on a binary tree.
 
-// In the case of binary search tree, the inorder traversal gives the nodes in
-// non-decreasing order. To get the nodes of a BST in a non-decreasing order, we
-// can use a reversed variation of the inorder traversal algorithm.
+// A preorder traversal is normally used to create a copy of the tree. It's
+// also used to get prefix expressions of an expression tree (see
+// https://www.geeksforgeeks.org/expression-tree/). See
+// http://en.wikipedia.org/wiki/Polish_notation to understand why prefix
+// expressions are useful.
 
-// the inorder traversal algorithm processes a binary tree by first recursively
-// processing the left subtree, then processing the root, then processing the
-// right subtree.
+// the preorder traversal algorithm processes a binary tree by first visiting the 
+// root, recursively traversing the left subtree, and then finally recursively traversing
+// the right subtree
 
-// the worst case time complexity of an inorder traversal algorithm is O(n),
+// the worst case time complexity of an preorder traversal algorithm is O(n),
 // where n is the number of nodes in the tree, because the algorithm does the
 // same amount of work for each node, it's just dependent on how many nodes
 // there are in the tree.
 
-// Below is an implementation of the inorder traversal algorithm, where we
-// print a node once it has been processed
+// Below is an implementation of the preorder traversal algorithm, where we
+// print a node once has been processed
 
 #include "../headers/BST.h" // including the general purpose BST header file to work with binary search trees in this file
 #include <iostream>         // for basic input and ouput
@@ -35,24 +36,24 @@ BST *minValueNode(BST *node) {
   return current;
 }
 
-void inOrderTraversal(BST *root) {
+void preOrderTraversal(BST *root) {
   // the strategy is to start at the root of the tree. If the root is null,
-  // we reutrn. If not, we start recurse on the left subtree, print out the
-  // value of the current root (traverse the root), and finally recurse on the
-  // right subtree
-
+  // we reutrn. If not, we print out the value of the current node. Then we recur
+  // on the left subtree, and then on the right subtree
+  
   // if the root is null, return
   if (!root)
     return;
-
-  // first recur on the left subtree
-  inOrderTraversal(root->left);
-
+  
   // print out the value of the current node
   std::cout << root->data << std::endl;
 
+  // then recur on the left subtree
+  preOrderTraversal(root->left);
+
+
   // then recur on the right subtree
-  inOrderTraversal(root->right);
+  preOrderTraversal(root->right);
 }
 
 // main function, which will just be driver code to test out the above traversal
@@ -68,8 +69,8 @@ int main(void) {
   tree = tree->insert(tree, 60);
   tree = tree->insert(tree, 80);
 
-  inOrderTraversal(
-      tree); // run an inorder traversal on the tree to print out all the nodes
+  preOrderTraversal(
+      tree); // run an preorder traversal on the tree to print out all the nodes
 
   return 0;
 }

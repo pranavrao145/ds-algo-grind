@@ -1,5 +1,5 @@
-#include <iostream> 
- 
+#include <iostream>
+
 class BST;
 
 BST *minValueNode(BST *node);
@@ -76,4 +76,3 @@ public:
     return root;
   }
 };
-

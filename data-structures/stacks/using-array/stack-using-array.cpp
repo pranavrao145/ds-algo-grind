@@ -10,6 +10,10 @@
 // array, an integer to represent the how many elements are currently in the
 // stack, and then an integer to represent the capacity of the stack.
 
+// for all the methods in this data structure, the time complexity is O(1)
+// beacuse we are doing a constant amount of work, no matter the number of elements
+// in the stack
+
 #include <iostream> // for basic input and output
 
 // We need a stack class, which will represent the stack itself. It will contain
@@ -70,7 +74,7 @@ public:
   // If it is, it will exit with a failure.
   int peek() {
     // if the stack is not empty, then return the top element of the array
-    if (!isEmpty())
+    if (!this->isEmpty())
       return this->arr[elements];
     // if the array is empty and an element cannot be peeked, exit with failure
     else

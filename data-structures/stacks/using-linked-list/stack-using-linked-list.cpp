@@ -13,6 +13,10 @@
 // A stack implemented using a linked list has an advantage over an array in
 // that the stack can grow and shrink as needed
 
+// for all the methods in this data structure, the time complexity is O(1)
+// beacuse we are doing a constant amount of work, no matter the number of elements
+// in the stack
+
 #include <iostream> // for basic input and output
 
 // since we are implementing the stack with a linked list, we first need a node
@@ -88,7 +92,7 @@ public:
   // it is not empty. If it is, it will exit with a failure.
   int peek() {
     // if the stack is not empty, then return the top element of the array
-    if (!isEmpty())
+    if (!this->isEmpty())
       return this->top->data;
     // if the list is empty and an element cannot be peeked, exit with failure
     else

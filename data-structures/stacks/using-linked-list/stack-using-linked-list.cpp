@@ -14,8 +14,8 @@
 // that the stack can grow and shrink as needed
 
 // for all the methods in this data structure, the time complexity is O(1)
-// beacuse we are doing a constant amount of work, no matter the number of elements
-// in the stack
+// beacuse we are doing a constant amount of work, no matter the number of
+// elements in the stack
 
 #include <iostream> // for basic input and output
 
@@ -35,9 +35,9 @@ public:
 // then we need a stack class, which will represent the stack itself. It will
 // contain functions to push to the stack, pop from the stack, utility functions
 // to see if the stack is empty, a function to peek the top value of the stack.
-// We'll also include a constructor to make life easier. Since this is a linked
-// list implementation of the stack, we'll exclude anything that has to do with
-// the max capacity of the stack, as the linked list is dynamic in size.
+// Since this is a linked list implementation of the stack, we'll exclude
+// anything that has to do with the max capacity of the stack, as the linked
+// list is dynamic in size.
 class Stack {
 public:
   Node *top = nullptr; // a node pointer (initially nullptr to keep track of the

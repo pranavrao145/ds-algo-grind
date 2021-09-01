@@ -57,7 +57,7 @@ public:
   void pop() {
     // if the stack is already empty, return
     if (this->isEmpty()) {
-      std::cout << "Stack overflow. Refusing to pop." << std::endl;
+      std::cout << "Stack underflow. Refusing to pop." << std::endl;
       return;
     }
 
@@ -66,7 +66,8 @@ public:
     this->elements--;
   }
 
-  // this function will return the top element of the stack
+  // this function will return the top element of the stack if it is not empty.
+  // If it is, it will exit with a failure.
   int peek() {
     // if the stack is not empty, then return the top element of the array
     if (!isEmpty())
@@ -79,7 +80,7 @@ public:
 
 // main function, which is just some driver code to test out the above
 int main() {
-  Stack *stack = new Stack(5); // create a new stack with a capacity of 10
+  Stack *stack = new Stack(5); // create a new stack with a capacity of 5
 
   // push some elements
   stack->push(3);

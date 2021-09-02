@@ -1,6 +1,6 @@
-// This document contains an implementation of a binary max heap. It will
-// contain all the normal functions one would expect to conduct on a max heap,
-// as well as a function to initialize a sample max heap in the form of a
+// This document contains an implementation of a binary min heap. It will
+// contain all the normal functions one would expect to conduct on a min heap,
+// as well as a function to initialize a sample min heap in the form of a
 // priority queue.
 
 // Definition of a heap (Wikipedia): a heap is a specialized tree-based data
@@ -18,9 +18,9 @@
 // Binary heaps have the smallest possible height of log(n), where n is the
 // total number of nodes in the heap.
 
-// In a max heap, the keys of the parent nodes are ALWAYS greater than or equal
-// to those of the children, and the highest key is in the root node. For a
-// priority queue, this means that the root node is always the highest priority.
+// In a min heap, the keys of the parent nodes are ALWAYS greater than or equal
+// to those of the children, and the lowest key is in the root node. For a
+// priority queue, this means that the root node is always the lowest priority.
 
 #include <iostream> // for basic input and output
 #include <vector>   // to be able to use vectors
@@ -32,7 +32,7 @@
 
 // instead of explicitly defining a heap class, we are going to define a
 // priority queue class, which is the most common implementation for a heap.
-// This way it is easier to show the max heap in action.
+// This way it is easier to show the min heap in action.
 
 // this class will contain functions to heapify_up and heapify_down (see below),
 // functions to push and pop to the heap, a function to peek the top of the
@@ -88,33 +88,33 @@ private:
   void heapifyDown(int i) {
     // the strategy is to get the right and left child of the node at the given
     // index. Then compare the node at the the index with its left and right
-    // children to find the largest value. Finally, swap a child having greater
+    // children to find the smallest value. Finally, swap a child having smaller
     // value and call heapify down (recursively) on the child
 
-    // declare a largest variable, which starts at the current index, to hold
-    // the largest node in all the comparisons made
-    int largest = i;
+    // declare a smallest variable, which starts at the current index, to hold
+    // the smallest node in all the comparisons made
+    int smallest = i;
 
     // get the left and right children
     int left = this->left(i);
     int right = this->right(i);
 
-    // if the left node is discovered to be larger than the current node, then
-    // update the value of the largest variable
-    if (left < this->arr.size() && this->arr[left] > this->arr[i])
-      largest = left;
+    // if the left node is discovered to be smaller than the current node, then
+    // update the value of the smallest variable
+    if (left < this->arr.size() && this->arr[left] < this->arr[i])
+      smallest = left;
 
-    // if the right node is discovered to be larger than the current largest, then
-    // update the value of the largest variable
-    if (right < this->arr.size() && this->arr[right] > this->arr[largest])
-      largest = right;
+    // if the right node is discovered to be smaller than the current smallest,
+    // then update the value of the smallest variable
+    if (right < this->arr.size() && this->arr[right] < this->arr[smallest])
+      smallest = right;
 
-    // if the largest doesn't turn out to be the node at index i itself, switch
+    // if the smallest doesn't turn out to be the node at index i itself, switch
     // the node at i with the child having the greater value. Then call
     // heapifyDown on the child
-    if (largest != i) {
-      std::swap(this->arr[i], this->arr[largest]);
-      heapifyDown(largest);
+    if (smallest != i) {
+      std::swap(this->arr[i], this->arr[smallest]);
+      heapifyDown(smallest);
     }
   }
 
@@ -131,8 +131,9 @@ private:
     // violate the heap property. If they do, then swap the two, and then call
     // heapfiy up on the parent
 
-    // if i exists and the node at index i's parent is less than the node itself
-    if (i && this->arr[this->parent(i)] < this->arr[i]) {
+    // if i exists and the node at index i's parent is greater than the node
+    // itself
+    if (i && this->arr[this->parent(i)] > this->arr[i]) {
       std::swap(this->arr[i], this->arr[this->parent(i)]); // swap the two nodes
       heapifyUp(this->parent(i)); // call heapify_up on the parent
     }
@@ -160,7 +161,7 @@ public:
     heapifyUp(index);                 // call heapify up on the index
   }
 
-  // this function will pop the element with the highest priority in the heap
+  // this function will pop the element with the lowest priority in the heap
   // (which is at the root). As mentioned in the README on priority queues, the
   // time complexity of this operation is O(log(n))
   void pop() {
@@ -184,7 +185,7 @@ public:
                           // to fix its structure
   }
 
-  // this function will return the element in the heap with the highest priority
+  // this function will return the element in the heap with the lowest priority
   // (which will be the element at the root)
   int top() {
     // if the heap is empty, return

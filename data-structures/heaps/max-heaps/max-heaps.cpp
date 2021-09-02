@@ -42,7 +42,7 @@ class PriorityQueue {
 private:
   std::vector<int> arr; // the vector that actually represent the heap
 
-  // IMPORTANT NODE:
+  // IMPORTANT NOTE:
   // because this is a heap and it satisfies the properties of a heap, there is
   // actually a consistent formula to find things like the parent, left child,
   // and right child of any given node.
@@ -142,6 +142,9 @@ public:
   // this is a utility function to check if the heap is empty
   bool isEmpty() { return this->arr.size() == 0; }
 
+  // this is a utility function to check if the heap is empty
+  int size() { return this->arr.size(); }
+
   // this function will take a key and push it into the heap. The time
   // complexity of this function, as mentioned in the README on priority queues,
   // is O(log(n))
@@ -179,4 +182,65 @@ public:
     this->heapifyDown(0); // heapify down the whole heap (starting from index 0)
                           // to fix its structure
   }
+
+  // this function will return the element in the heap with the highest priority
+  // (which will be the element at the root)
+  int top() {
+    // if the heap is empty, return
+    if (this->isEmpty())
+      exit(EXIT_FAILURE);
+
+    // else return the first value in the vector
+    return this->arr[0];
+  }
 };
+
+// main function, which is just some driver code to test out the above
+int main() {
+  // create a new priority queue
+  PriorityQueue *pq = new PriorityQueue();
+
+  // NOTE: The element's value decides priority
+
+  // push some elements to the heap
+  pq->push(3);
+  pq->push(2);
+  pq->push(15);
+
+  std::cout << "Size: " << pq->size() << std::endl;
+
+  // view the top and pop it
+  std::cout << "Current top: " << pq->top() << std::endl;
+  pq->pop();
+
+  // view the top and pop it
+  std::cout << "Current top: " << pq->top() << std::endl;
+  pq->pop();
+
+  // push some more elements to the heap
+  pq->push(5);
+  pq->push(4);
+  pq->push(45);
+
+  std::cout << "Size: " << pq->size() << std::endl;
+
+  // view the top and pop it
+  std::cout << "Current top: " << pq->top() << std::endl;
+  pq->pop();
+
+  // view the top and pop it
+  std::cout << "Current top: " << pq->top() << std::endl;
+  pq->pop();
+
+  // view the top and pop it
+  std::cout << "Current top: " << pq->top() << std::endl;
+  pq->pop();
+
+  // view the top and pop it
+  std::cout << "Current top: " << pq->top() << std::endl;
+  pq->pop();
+
+  pq->pop(); // pop operation on an empty heap
+
+  return 0;
+}

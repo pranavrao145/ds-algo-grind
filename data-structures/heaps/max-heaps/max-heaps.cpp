@@ -23,11 +23,12 @@
 // priority queue, this means that the root node is always the highest priority.
 
 #include <iostream> // for basic input and output
+#include <vector>   // to be able to use vectors
 
 // even though a binary heap is a full binary tree, we don't normally use
-// a binary tree to implement said heap. Instead, we store keys in an array
-// and use their relative positions within that array to represent parent-child
-// relationships
+// a binary tree to implement said heap. Instead, we store keys in an array (a
+// vector in this case) and use their relative positions within that vector to
+// represent parent-child relationships
 
 // instead of explicitly defining a heap class, we are going to define a
 // priority queue class, which is the most common implementation for a heap.
@@ -39,7 +40,7 @@
 // include a constructor to make life easier
 class PriorityQueue {
 private:
-  int *arr; // the array that actually represent the heap
+  std::vector<int> arr; // the vector that actually represent the heap
 
   // IMPORTANT NODE:
   // because this is a heap and it satisfies the properties of a heap, there is
@@ -78,12 +79,104 @@ private:
   // first we have heapify down. Heapify down is invoked if an element at index
   // i violates a heap property in with its two direct children. It converts the
   // binary tree, with its root at index i, and converts it into a heap by
-  // moving said node down the tree (hence the name, heapify down).
+  // moving said node down the tree (hence the name, heapify down). A heapify
+  // down operation is normally used in the pop operation of a binary tree.
 
   // this function will take an index i, and turn the binary tree rooted at i
-  // into a heap by moving the node at this index down the tree
+  // into a heap by moving the node at this index down the tree. The time
+  // complexity of this function is O(log(n))
+  void heapifyDown(int i) {
+    // the strategy is to get the right and left child of the node at the given
+    // index. Then compare the node at the the index with its left and right
+    // children to find the largest value. Finally, swap a child having greater
+    // value and call heapify down (recursively) on the child
+
+    // declare a largest variable, which starts at the current index, to hold
+    // the largest node in all the comparisons made
+    int largest = i;
+
+    // get the left and right children
+    int left = this->left(i);
+    int right = this->right(i);
+
+    // if the left node is discovered to be larger than the current node, then
+    // update the value of the largest variable
+    if (left < this->arr.size() && this->arr[left] > this->arr[i])
+      largest = left;
+
+    // if the right node is discovered to be larger than the current node, then
+    // update the value of the largest variable
+    if (right < this->arr.size() && this->arr[right] > this->arr[i])
+      largest = right;
+
+    // if the largest doesn't turn out to be the node at index i itself, switch
+    // the node at i with the child having the greater value. Then call
+    // heapifyDown on the child
+    if (largest != i) {
+      std::swap(this->arr[i], this->arr[largest]);
+      heapifyDown(largest);
+    }
+  }
+
+  // then we have heapify up. Heapify up is invoked if the parent of the
+  // current node violates the heap property. It converts the binary tree into a
+  // heap by moving the node up the tree (hence the name heapify up).
+
+  // this function will take an index i, and turn the binary tree into a heap b
+  // moving the node at index i up the tree. The time complexity of this
+  // function is O(log(n)). A heapify up operation is normally used in the
+  // push operation of a binary tree
+  void heapifyUp(int i) {
+    // the strategy is to check if the node at the given index i and its parent
+    // violate the heap property. If they do, then swap the two, and then call
+    // heapfiy up on the parent
+
+    // if i exists and the node at index i's parent is less than the node itself
+    if (i && this->arr[this->parent(i)] < this->arr[i]) {
+      std::swap(this->arr[i], this->arr[this->parent(i)]); // swap the two nodes
+      heapifyUp(this->parent(i)); // call heapify_up on the parent
+    }
+  }
 
 public:
-  int size =
-      0; // to keep track of the size (number of elements) currently in the heap
+  // this is a utility function to check if the heap is empty
+  bool isEmpty() { return this->arr.size() == 0; }
+
+  // this function will take a key and push it into the heap. The time
+  // complexity of this function, as mentioned in the README on priority queues,
+  // is O(log(n))
+  void push(int key) {
+    // the strategy is to push a new element to the end of the vector, get the
+    // index of it, and then call heapify_up on the new node (element) using the
+    // index we got
+
+    // push the new element into the array
+    this->arr.push_back(key);
+
+    int index = this->arr.size() - 1; // get the index of the new element
+  }
+
+  // this function will pop the element with the highest priority in the heap
+  // (which is at the root). As mentioned in the README on priority queues, the
+  // time complexity of this operation is O(log(n))
+  void pop() {
+    // the strategy is to check if the heap is empty. If it is, we will return.
+    // If it's not, then we're going to replace the the root of the heap with
+    // the last element, pop back from the vector to remove the root, and then
+    // heapify down the entire heap, starting from the 0th index (which is the
+    // root node)
+
+    if (this->isEmpty()) { // if the heap is empty
+      std::cout << "Heap underflow. Refusing to pop." << std::endl;
+      return;
+    }
+
+    this->arr[0] = this->arr.back(); // replace the root of of the heap with the
+                                     // last element of the vector
+    this->arr
+        .pop_back(); // pop back from the array to get rid of the root element
+
+    this->heapifyDown(0); // heapify down the whole heap (starting from index 0)
+                          // to fix its structure
+  }
 };

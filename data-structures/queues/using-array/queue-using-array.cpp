@@ -21,7 +21,7 @@
 // function to enqueue data to the queue, dequeue data from the queue, peek the
 // front element of the queue without dequeueing, and finally utility functions
 // to check if the queue is empty or full. We'll also include a constructor to
-// make life easier
+// make life easier.
 class Queue {
 public:
   int *arr;

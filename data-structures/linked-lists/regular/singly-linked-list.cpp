@@ -31,7 +31,6 @@ public:
 // given node of the list to the tail of the list, find a node in the list,
 // and finally remove a node from the list. We will also include a utility
 // function to print the data in the list.
-
 class SinglyLinkedList {
 public:
   // the list needs a head. Initialize to nullptr so we can check value later.
